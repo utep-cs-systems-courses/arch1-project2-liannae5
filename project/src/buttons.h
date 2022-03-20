@@ -18,4 +18,12 @@
 
 #define SW4 BIT3 // p2.3 = switch 4
 
-#define SWITCHES (SW1 | SW2 | SW3 | SW4) /* Switches #1 - #4 on the greenboard */
+#define SWITCHES (SW1 | SW2 | SW3 | SW4) // Switches 1-4 on green board
+
+void switch_init();
+void sw1_interrupt_handler();
+void sw2_interrupt_handler();
+void sw3_interrupt_handler();
+void sw4_interrupt_handler();
+
+#endif
