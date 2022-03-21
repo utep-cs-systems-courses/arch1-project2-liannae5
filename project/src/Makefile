@@ -22,7 +22,7 @@ all: toy.elf
 
 #additional rules for files
 
-.elf: ${COMMON_OBJECTS} buttons.o buzzer.o buzzerMain.o ../lib/libTimer.a
+.elf: ${COMMON_OBJECTS} p2_interrupt_handler.o wdInterruptHandler.o buttons.o buzzer.o buzzerMain.o ../lib/libTimer.a
 
 	${CC} ${CFLAGS} -o $@ $^
 
