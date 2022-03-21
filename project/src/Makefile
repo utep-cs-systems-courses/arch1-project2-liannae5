@@ -22,7 +22,7 @@ all: toy.elf
 
 #additional rules for files
 
-.elf: ${COMMON_OBJECTS} p2_interrupt_handler.o wdInterruptHandler.o buttons.o buzzer.o buzzerMain.o ../lib/libTimer.a
+toy.elf: ${COMMON_OBJECTS} led.o stateMachines.o p2_interrupt_handler.o wdInterruptHandler.o buttons.o buzzer.o buttonMain.o ../lib/libTimer.a
 
 	${CC} ${CFLAGS} -o $@ $^
 
@@ -31,8 +31,6 @@ all: toy.elf
 load: toy.elf
 
 	msp430loader.sh  $^
-
-
 
 clean: $^
 
@@ -44,3 +42,7 @@ led.o: led.c led.h
 buzzer.c: buzzer.h
 
 buttons.c: buttons.h
+
+wdInterruptHandler.o: stateMachines.h
+
+stateMachines.o: led.h stateMachines.h
