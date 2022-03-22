@@ -15,5 +15,8 @@ void turn_red_off();
 void turn_green_off();
 void right();
 void left();
+void turn_leds_on();
+void turn_leds_off();
+void turn_buzzer_off();
 
 #endif
