@@ -119,7 +119,7 @@ void paradiddle()
        }
        beat_count++;
        
-        //buzzer_set_period(first_beat_period);
+        buzzer_set_period(first_beat_period);
         beat= 3;
         break;
      case 2:
@@ -143,6 +143,7 @@ void paradiddle()
 	   turn_red_on();
 	     }
        }
+       buzzer_set_period(period);
        beat_count++;
        beat = 3;
        break;
@@ -177,22 +178,20 @@ void whistle()
     if(period == 100){
       period = 1000;
     }
-    // turn_red_on();
-    // turn_green_on();
+ 
     right();
     period = period - 100;
-    //buzzer_set_period(period);
+    buzzer_set_period(period);
     whistle_state = 1;
     break;
   case 1:
     if(period == 100){
       period = 1000;
     }
-    //turn_green_off();
-    // turn_red_off();
+ 
     left();
     period = period - 100;
-    // buzzer_set_period(period);
+    buzzer_set_period(period);
     whistle_state = 0;
     break;
   }
