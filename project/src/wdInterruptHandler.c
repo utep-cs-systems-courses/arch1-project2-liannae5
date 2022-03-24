@@ -7,21 +7,21 @@
 void __interrupt_vec(WDT_VECTOR) WDT(){
 
   static char blink_count = 0;
-  if(++blink_count == 125){
+  if(++blink_count == 63){
 
     if(turnoff_on) {
       turnoff();
     }
-    if(whistle_on) {
+   else if(whistle_on) {
       whistle();
     }
 
-    else if(paradiddle_on) {
+   else if(paradiddle_on) {
       paradiddle();
     }
 
-    else if(hcb_on) {
-      hotCrossBuns();
+   else if(nfi_on) {
+      nf_intro();
     }
 
     blink_count = 0;

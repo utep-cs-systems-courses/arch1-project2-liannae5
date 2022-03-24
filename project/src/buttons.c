@@ -67,6 +67,8 @@ void sw1_interrupt_handler()
   char p2val = sw1_update_interrupt_sense();
   sw1_state_down = (p2val & SW1) ? 0 : 1;
   sw1_state_changed = 1;
+  selectFunction();
+  led_update();
 }
 
 
@@ -75,13 +77,14 @@ void sw2_interrupt_handler()
   char p2val = sw2_update_interrupt_sense();
   sw2_state_down = (p2val & SW2) ? 0 : 1;
   sw2_state_changed = 1;
+  selectFunction();
+  led_update();
 }
 
 void sw3_interrupt_handler()
 {
   char p2val = sw3_update_interrupt_sense();
   sw3_state_down = (p2val & SW3) ? 0 : 1;
-  turn_green_on();
   sw3_state_changed = 1;
   selectFunction();
   led_update();

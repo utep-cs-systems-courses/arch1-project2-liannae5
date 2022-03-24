@@ -45,3 +45,6 @@ clean:
 	rm -f *.o *.elf
 
 	#rm -rf h lib
+
+main.o: led.h
+wdInterruptHandler.o:  led.h

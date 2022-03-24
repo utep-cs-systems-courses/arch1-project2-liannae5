@@ -6,7 +6,7 @@
 #include "stateMachines.h"
 
 unsigned char paradiddle_on = 0;
-unsigned char hcb_on = 0;
+unsigned char nfi_on = 0;
 unsigned char whistle_on = 0;
 unsigned char turnoff_on = 0;
 
@@ -14,26 +14,26 @@ void selectFunction()
 {
   if(sw4_state_down){
     paradiddle_on = 0;
-    hcb_on = 0;
+    nfi_on = 0;
     whistle_on = 0;
     turnoff_on = 1;
     
   }
   if(sw3_state_down){
     paradiddle_on = 1;
-    hcb_on = 0;
+    nfi_on = 0;
     whistle_on = 0;
     turnoff_on = 0;
   }
-  else if(sw2_state_down){
+  if(sw2_state_down){
     paradiddle_on = 0;
-    hcb_on = 1;
+    nfi_on = 1;
     whistle_on = 0;
     turnoff_on = 0;
   }
-  else if(sw1_state_down){
+  if(sw1_state_down){
     paradiddle_on = 0;
-    hcb_on = 0;
+    nfi_on = 0;
     whistle_on = 1;
     turnoff_on = 0;
   }
@@ -76,8 +76,8 @@ void turn_buzzer_off()
 {
   buzzer_set_period(0);
 }
-// The following two funtions are used in the paradiddle machine
-// They turn one led on and the other led off
+// The following two funtions are used to easily switch one led on and the other off
+// The right function turns red on, green off and the left function does the opposite
 void right(){
   turn_red_on();
   turn_green_off();
@@ -104,10 +104,10 @@ void turnoff()
 //The red led represents an R (right) and the green is L (left). 
 void paradiddle()
 {
-  static int period = 750; 
+  static int period = 250; 
   static char beat = 1;
   static char beat_count = 1;
-  static int first_beat_period = 500;
+  static int first_beat_period = 100;
   turn_leds_off();
   switch(beat){
      case 1:
@@ -118,47 +118,34 @@ void paradiddle()
 	 turn_red_on();
        }
        beat_count++;
+       //buzzer_set_period(first_beat_period);
+       beat= 3;
+       break;
        
-        buzzer_set_period(first_beat_period);
-        beat= 3;
-        break;
      case 2:
-       if(beat_count > 4){
-	 if(beat_count == 6)
-	   {
-	     turn_red_on();
-	   }
-	 else{
-	   if(beat_count >= 8){
-	     beat_count = 0;
-	   }
-	   turn_green_on();
-	 }
+       if(beat_count == 2 || beat_count == 7 || beat_count == 8){
+	 turn_green_on();
        }
-       else{
-	 if(beat_count == 2){
-	   turn_green_on();
-	 }
-	 else{
-	   turn_red_on();
-	     }
-       }
-       buzzer_set_period(period);
+       else if(beat_count == 3 || beat_count == 4 || beat_count == 6){
+	 turn_red_on();
+       } 
        beat_count++;
+       // buzzer_set_period(period);
        beat = 3;
        break;
+       
      case 3:
        turn_leds_off();
        turn_buzzer_off();
-       if(beat_count == 5){
+       if(beat_count == 5 || beat_count == 9){
 	 beat = 1;
+	 if(beat_count == 9){
+	   beat_count == 1;
+	 }
        }
        else{
 	 beat = 2;
        }
-       if(beat_count == 8){
-	 beat_count == 1;
-       } 
        break;
   }
    
@@ -198,71 +185,60 @@ void whistle()
   led_changed = 1;
   led_update();
 }
-void hotCrossBuns(){
-  static char hcb_state = 0;
-  static char bag_repeat = 0;
-  static char note_repeat = 0;
-  static char end_song = 0;
-  static int g_note = 247;
-  static int a_note = 220;
-  static int b_note = 196;
-  switch(hcb_state){
+void nf_intro(){
+  static char nfi_state = 0;
+  static int f_note = 1397;
+  static int e_note = 1319;
+  static int d_note = 1175;
+  static int a_note = 880;
+  static int d_flat_note = 1109;
+  static int b_flat_note = 932;
+  switch(nfi_state){
     case 0:
       turn_leds_on();
-      buzzer_set_period(b_note);
-      hcb_state = 1;
+      buzzer_set_period(f_note);
+      nfi_state = 1;
       break;
     case 1:
       right();
-      buzzer_set_period(a_note);
-      hcb_state = 2;
+      buzzer_set_period(e_note);
+      nfi_state = 2;
       break;
     case 2:
       left();
-      buzzer_set_period(g_note);
-      if(bag_repeat == 0){
-	hcb_state = 0;
-	bag_repeat = 1;
-      }
-      else if(end_song){
-	end_song = 0;
-	hcb_state = 4;
-      }
-      else{
-	bag_repeat = 0;
-	hcb_state = 3;
-      }
+      buzzer_set_period(d_note);
+      nfi_state = 3;
       break;
     case 3:
-      turn_buzzer_off();
-      turn_leds_off();
-      if(note_repeat >= 3){
-	buzzer_set_period(g_note);
-	left();
-	hcb_state = 3;
-	note_repeat++;
-      }
-      else{
-	buzzer_set_period(a_note);
-	right();
-	if(note_repeat == 7){
-	  note_repeat = 0;
-	  hcb_state = 0;
-	  end_song = 1;
-	}
-	else{
-	  hcb_state = 3;
-	  note_repeat++;
-	}
-      }
+      right();
+      buzzer_set_period(d_flat_note);
+      nfi_state = 4;
       break;
     case 4:
-      turn_buzzer_off();
-      turn_leds_off();
-      hcb_state = 0;
+      turn_leds_on();
+      buzzer_set_period(d_note);
+      nfi_state = 5;
+      break;
+    case 5:
+      left();
+      buzzer_set_period(d_flat_note);
+      nfi_state = 6;
+      break;
+    case 6:
+      right();
+      buzzer_set_period(b_flat_note);
+      nfi_state = 7;
+      break;
+    case 7:
+      left();
+      buzzer_set_period(a_note);
+      nfi_state = 0;
       break;
   }
-}
+  led_changed = 1;
+  led_update();
+}  
+
     
 	
 	
