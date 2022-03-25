@@ -12,6 +12,7 @@ unsigned char turnoff_on = 0;
 
 void selectFunction()
 {
+  //If button 4 is pressed,all leds and the buzzer is turned off
   if(sw4_state_down){
     paradiddle_on = 0;
     nfi_on = 0;
@@ -19,18 +20,23 @@ void selectFunction()
     turnoff_on = 1;
     
   }
+  //If button 3 is pressed, the paradiddle state machine is started
   if(sw3_state_down){
     paradiddle_on = 1;
     nfi_on = 0;
     whistle_on = 0;
     turnoff_on = 0;
   }
+
+  //If button 2 is pressed, a song is played
   if(sw2_state_down){
     paradiddle_on = 0;
     nfi_on = 1;
     whistle_on = 0;
     turnoff_on = 0;
   }
+
+  //If button 1 is pressed a whistle occurs
   if(sw1_state_down){
     paradiddle_on = 0;
     nfi_on = 0;
@@ -104,12 +110,14 @@ void turnoff()
 //The red led represents an R (right) and the green is L (left). 
 void paradiddle()
 {
-  static int period = 250; 
-  static char beat = 1;
-  static char beat_count = 1;
-  static int first_beat_period = 100;
+  static int period = 250; //period for all beats except the 1st of each measure
+  static char beat = 1; // holds the current state value
+  static char beat_count = 1; // counts how many beats have occurred
+  static int first_beat_period = 100; //period for the first beat  
   turn_leds_off();
+  //paradiddle state machine
   switch(beat){
+    //Case one operates the first beat
      case 1:
        if (beat_count == 5){
 	 turn_green_on();
