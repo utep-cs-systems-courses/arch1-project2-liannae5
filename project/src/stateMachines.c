@@ -1,4 +1,3 @@
-
 #include <msp430.h>
 #include "buttons.h"
 #include "led.h"
@@ -45,54 +44,6 @@ void selectFunction()
   }
 }
 
-// The following functions turn the leds on or off
-
-void turn_red_on()
-{
-  red_on = 1;
-}
-
-void turn_red_off()
-{
-  red_on = 0;
-}
-void turn_green_on()
-{
-  green_on = 1;
-}
-
-void turn_green_off()
-{
-  green_on = 0;
-}
-
-void turn_leds_off()
-{
-  green_on = 0;
-  red_on = 0;
-}
-
-void turn_leds_on()
-{
-  green_on = 1;
-  red_on = 1;
-}
-
-void turn_buzzer_off()
-{
-  buzzer_set_period(0);
-}
-// The following two funtions are used to easily switch one led on and the other off
-// The right function turns red on, green off and the left function does the opposite
-void right(){
-  turn_red_on();
-  turn_green_off();
-}
-void left(){
-  turn_red_off();
-  turn_green_on();
-}
-
  
 // Uses switch 4 (P2.3) to turnoff all leds and the buzzer
 void turnoff()
@@ -100,7 +51,7 @@ void turnoff()
 {
   turn_green_off();
   turn_red_off();
-  buzzer_set_period(0);
+  turn_buzzer_off();
   led_changed = 1;
   led_update();
 
@@ -111,85 +62,94 @@ void turnoff()
 void paradiddle()
 {
   static int period = 250; //period for all beats except the 1st of each measure
-  static char beat = 1; // holds the current state value
+  static char beat_state = 1; // holds the current state value
   static char beat_count = 1; // counts how many beats have occurred
   static int first_beat_period = 100; //period for the first beat  
   turn_leds_off();
   //paradiddle state machine
-  switch(beat){
+  switch(beat_state){
     //Case one operates the first beat
      case 1:
        if (beat_count == 5){
-	 turn_green_on();
+	 left;//starts 2nd measure with L (turns green on)
        }
        else{
-	 turn_red_on();
+	 right();//starts 1st measure with R (turns red on)
        }
-       beat_count++;
-       //buzzer_set_period(first_beat_period);
-       beat= 3;
+       beat_count++;//increase beat count
+       buzzer_set_period(first_beat_period); // different tone for 1st beat
+       beat_state= 3;// goes to state 3
        break;
        
+     //Case two operates all other beats besides the first
      case 2:
+       //turns green led on for beats 2,7, and 8
        if(beat_count == 2 || beat_count == 7 || beat_count == 8){
-	 turn_green_on();
+	 left();
        }
+       //turns red led on for 3,4, and 6
        else if(beat_count == 3 || beat_count == 4 || beat_count == 6){
 	 turn_red_on();
        } 
-       beat_count++;
-       // buzzer_set_period(period);
-       beat = 3;
+       beat_count++;//increase beat count
+       buzzer_set_period(period);//set tone to normal beat tone
+       beat_state = 3;// goes to state three
        break;
-       
+     //Turns off all leds and the buzzer in between beats and facilitates next beat   
      case 3:
-       turn_leds_off();
-       turn_buzzer_off();
+       turn_leds_off();//Turns leds off
+       turn_buzzer_off();//Turns buzzer off
+       
+       //Goes to state 1 for start of a new measure
        if(beat_count == 5 || beat_count == 9){
-	 beat = 1;
-	 if(beat_count == 9){
+	 beat_state = 1;
+	 if(beat_count == 9){ //If the 2 measures have finished, resets beat_count
 	   beat_count == 1;
 	 }
        }
+       // if beat_count within the same measure, next state is case 2
        else{
-	 beat = 2;
+	 beat_state = 2; 
        }
        break;
   }
-   
+  //updates leds 
   led_changed = 1;
   led_update();
     
 }
-    
-   
+
+//continousl whistles down until period is 100, then starts over  
 void whistle()
 {
-  static int period = 1000;
-  static char whistle_state = 0;
-  turn_red_on();
+  static int period = 1000; //initial period
+  static char whistle_state = 0;//holds whistle state
+  
   switch (whistle_state) {
   case 0:
+    //if period is 100, resets period to 1000
     if(period == 100){
       period = 1000;
     }
  
-    right();
-    period = period - 100;
-    buzzer_set_period(period);
-    whistle_state = 1;
+    right();// turns red on, green off 
+    buzzer_set_period(period);//sets buzzer with current period
+    period = period - 100;//decreases period
+    whistle_state = 1;//go to state 1
     break;
   case 1:
+    //if period is 100, resets period to 1000
     if(period == 100){
       period = 1000;
     }
  
-    left();
-    period = period - 100;
-    buzzer_set_period(period);
-    whistle_state = 0;
+    left(); //turns green on, red off
+    buzzer_set_period(period);//sets buzzer with current period
+    period = period - 100; //decreases period
+    whistle_state = 0;//goes to state 0
     break;
   }
+  //updates leds
   led_changed = 1;
   led_update();
 }

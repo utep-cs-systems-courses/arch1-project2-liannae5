@@ -11,6 +11,14 @@ extern unsigned char led_changed;
 
 void led_init();
 void led_update();
+void turn_leds_off();
+void turn_leds_on();
+void turn_red_on();
+void turn_green_on();
+void turn_red_off();
+void turn_green_off();
+void right();
+void left();
 
 
 #endif // included

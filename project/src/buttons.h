@@ -15,7 +15,8 @@
 
 
 // Functions to handle buttons
-void switch_init();
+void switch_init(); //intialize
+//interrupt handlers
 void sw1_interrupt_handler();
 void sw2_interrupt_handler();
 void sw3_interrupt_handler();

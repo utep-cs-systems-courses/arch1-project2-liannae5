@@ -24,4 +24,46 @@ void led_update()
   }
 }
 
+//Turns red led on
+void turn_red_on()
+{
+  red_on = 1;
+}
+//Turns red led off
+void turn_red_off()
+{
+  red_on = 0;
+}
+//Turns green led on
+void turn_green_on()
+{
+  green_on = 1;
+}
+//Turns green off
+void turn_green_off()
+{
+  green_on = 0;
+}
+//Turns both leds off
+void turn_leds_off()
+{
+  green_on = 0;
+  red_on = 0;
+}
+//Turns both leds on
+void turn_leds_on()
+{
+  green_on = 1;
+  red_on = 1;
+}
+//Turns right (red) led on, and turns left (green) led off
+void right(){
+  turn_red_on();
+  turn_green_off();
+}
+//Turns left (green) led on, and turns right(led) off
+void left(){
+  turn_red_off();
+  turn_green_on();
+}
 

@@ -15,7 +15,7 @@ char sw1_state_down, sw1_state_changed,
 // handle when each respective is pressed/unpressed
 static char sw1_update_interrupt_sense()
 {
-  char p2val = P2IN;
+  char p2val = P2IN;// switch is in p2
   // Update switch interrupt to detect changes from current buttons
   P2IES |= (p2val & SW1);// If switch up, sense down 
   P2IES &= (p2val | ~SW1);// If switch down, sense up
@@ -65,10 +65,10 @@ void switch_init()
 void sw1_interrupt_handler()
 {
   char p2val = sw1_update_interrupt_sense();
-  sw1_state_down = (p2val & SW1) ? 0 : 1;
-  sw1_state_changed = 1;
-  selectFunction();
-  led_update();
+  sw1_state_down = (p2val & SW1) ? 0 : 1;// 0 when switch is up, otherwise 1 to show button pressed
+  sw1_state_changed = 1;//boolean to show if state changed
+  selectFunction();//picks method according to switch # pressed
+  led_update();//updates leds
 }
 
 

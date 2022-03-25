@@ -24,6 +24,12 @@ void buzzer_set_period(short cycles) /* buzzer clock = 2MHz.  (period of 1k resu
   CCR1 = cycles >> 1;		/* one half cycle */
 }
 
+//Turns the buzzer off by setting period = 0
+void turn_buzzer_off()
+{
+  buzzer_set_period(0);
+}
+
 
     
     
