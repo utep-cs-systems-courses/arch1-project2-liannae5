@@ -9,6 +9,7 @@
 extern unsigned char red_on, green_on;
 extern unsigned char led_changed;
 
+//Functions to handle leds
 void led_init();
 void led_update();
 void turn_leds_off();

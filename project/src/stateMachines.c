@@ -71,10 +71,10 @@ void paradiddle()
     //Case one operates the first beat
      case 1:
        if (beat_count == 5){
-	 left;//starts 2nd measure with L (turns green on)
+	 turn_green_on();//starts 2nd measure with L (turns green on)
        }
        else{
-	 right();//starts 1st measure with R (turns red on)
+	 turn_leds_on();//starts 1st measure with R (turns red on)
        }
        beat_count++;//increase beat count
        buzzer_set_period(first_beat_period); // different tone for 1st beat
@@ -85,7 +85,7 @@ void paradiddle()
      case 2:
        //turns green led on for beats 2,7, and 8
        if(beat_count == 2 || beat_count == 7 || beat_count == 8){
-	 left();
+	 turn_green_on();
        }
        //turns red led on for 3,4, and 6
        else if(beat_count == 3 || beat_count == 4 || beat_count == 6){
@@ -101,9 +101,9 @@ void paradiddle()
        turn_buzzer_off();//Turns buzzer off
        
        //Goes to state 1 for start of a new measure
-       if(beat_count == 5 || beat_count == 9){
+       if(beat_count == 5 || beat_count >= 9){
 	 beat_state = 1;
-	 if(beat_count == 9){ //If the 2 measures have finished, resets beat_count
+	 if(beat_count >= 9){ //If the 2 measures have finished, resets beat_count
 	   beat_count == 1;
 	 }
        }
@@ -111,6 +111,7 @@ void paradiddle()
        else{
 	 beat_state = 2; 
        }
+       
        break;
   }
   //updates leds 
@@ -155,12 +156,12 @@ void whistle()
 }
 void nf_intro(){
   static char nfi_state = 0;
-  static int f_note = 1397;
-  static int e_note = 1319;
-  static int d_note = 1175;
-  static int a_note = 880;
-  static int d_flat_note = 1109;
-  static int b_flat_note = 932;
+  static int f_note = 698;
+  static int e_note = 659;
+  static int d_note = 587;
+  static int a_note = 440;
+  static int d_flat_note = 554;
+  static int b_flat_note = 466;
   switch(nfi_state){
     case 0:
       turn_leds_on();
@@ -194,12 +195,12 @@ void nf_intro(){
       break;
     case 6:
       right();
-      buzzer_set_period(b_flat_note);
+      buzzer_set_period(a_note);
       nfi_state = 7;
       break;
     case 7:
       left();
-      buzzer_set_period(a_note);
+      buzzer_set_period(b_flat_note);
       nfi_state = 0;
       break;
   }
