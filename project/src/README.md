@@ -22,6 +22,9 @@ buzzer and leds on and off in a specific and alternating pattern.
 ## Instuctions
 
  *Press Button 1 to create a whistle/siren sound that decreases in frequency.
+ 
  *Press Button 2 to play a song
+ 
  *Press Button 3 to show a paradiddle sequence
+ 
  *Press Button 4 to turn off all leds and the buzzer.
