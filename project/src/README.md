@@ -1,10 +1,13 @@
-##Project 2: Blinky-Buzzy Toy
+Project 2: Blinky-Buzzy Toy
+=============================
 
-#Objective
+## Objective
+
 To make a toy that utilizes interrupts and buttons, leds, and buzzer on the
 MSP430.
 
-#Challenges
+## Challenges
+
 The main challenge I faced was setting up the Makefile and other code(mainly
 the header files) necessary to make the basic functions of the MSP430 work.
 Through this process I became much more comfortable with the elements of a
@@ -16,7 +19,8 @@ to guide me, and adjusted them to fit my needs. The state machine that I had the
 trouble with was the paradiddle method I created. It required turning the
 buzzer and leds on and off in a specific and alternating pattern.
 
-#Instuctions
+## Instuctions
+
  *Press Button 1 to create a whistle/siren sound that decreases in frequency.
  *Press Button 2 to play a song
  *Press Button 3 to show a paradiddle sequence
