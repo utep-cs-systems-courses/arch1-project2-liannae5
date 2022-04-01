@@ -64,7 +64,7 @@ void paradiddle()
   static int period = 250; //period for all beats except the 1st of each measure
   static char beat_state = 1; // holds the current state value
   static char beat_count = 1; // counts how many beats have occurred
-  static int first_beat_period = 100; //period for the first beat  
+  static int first_beat_period = 500; //period for the first beat  
   turn_leds_off();
   //paradiddle state machine
   switch(beat_state){
@@ -74,7 +74,7 @@ void paradiddle()
 	 turn_green_on();//starts 2nd measure with L (turns green on)
        }
        else{
-	 turn_leds_on();//starts 1st measure with R (turns red on)
+	 turn_red_on();//starts 1st measure with R (turns red on)
        }
        beat_count++;//increase beat count
        buzzer_set_period(first_beat_period); // different tone for 1st beat
@@ -103,10 +103,11 @@ void paradiddle()
        //Goes to state 1 for start of a new measure
        if(beat_count == 5 || beat_count >= 9){
 	 beat_state = 1;
-	 if(beat_count >= 9){ //If the 2 measures have finished, resets beat_count
-	   beat_count == 1;
-	 }
+	  if(beat_count >= 9){ //If the 2 measures have finished, resets beat_count
+	   beat_count = 1;
+	  }
        }
+       
        // if beat_count within the same measure, next state is case 2
        else{
 	 beat_state = 2; 
